@@ -680,6 +680,53 @@
                 </div>
 
                 <div id="daily-report-content"></div>
+
+                <!-- Trend Charts for Daily Report -->
+                <div id="daily-trend-charts" style="display: none;">
+                    <h3 style="margin: 30px 0 20px;">Performance Trends (Last 30 Days)</h3>
+                    <div class="grid">
+                        <div class="col-6">
+                            <div class="chart-container">
+                                <div class="chart-title">KPI Score Over Time</div>
+                                <canvas id="kpi-trend-chart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="chart-container">
+                                <div class="chart-title">Products Filled Over Time</div>
+                                <canvas id="products-trend-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid">
+                        <div class="col-6">
+                            <div class="chart-container">
+                                <div class="chart-title">Daily Production Weight (Last 30 Days)</div>
+                                <canvas id="weight-trend-chart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="chart-container">
+                                <div class="chart-title">Filling Hours Over Time</div>
+                                <canvas id="hours-trend-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart containers for daily report -->
+                <div id="daily-charts-section" style="display: none;">
+                    <h3 style="margin: 30px 0 20px;">Equipment Usage Today</h3>
+                    <div class="grid">
+                        <div class="col-12">
+                            <div class="chart-container">
+                                <div class="chart-title">Equipment Sessions</div>
+                                <canvas id="daily-equipment-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- PAGE 4: Product Search -->
@@ -737,6 +784,116 @@
             <!-- PAGE 5: Auto Reports -->
             <div id="auto-reports" class="page-content">
                 <h1 class="page-title">Weekly & Monthly Reports</h1>
+                
+                <!-- Custom Date Range Selector -->
+                <div class="grid" style="margin-bottom: 30px;">
+                    <div class="card col-12">
+                        <h3 style="margin-bottom: 20px; color: var(--accent-green);">Custom Timeframe Analysis</h3>
+                        <div class="grid">
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label class="form-label">Start Date</label>
+                                    <input type="date" id="custom-report-start" class="form-input">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label class="form-label">End Date</label>
+                                    <input type="date" id="custom-report-end" class="form-input">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label class="form-label">Quick Select</label>
+                                    <select id="quick-select-range" class="form-input" onchange="applyQuickSelect()">
+                                        <option value="">Choose timeframe...</option>
+                                        <option value="this-week">This Week</option>
+                                        <option value="last-week">Last Week</option>
+                                        <option value="this-month">This Month</option>
+                                        <option value="last-month">Last Month</option>
+                                        <option value="last-7-days">Last 7 Days</option>
+                                        <option value="last-30-days">Last 30 Days</option>
+                                        <option value="this-quarter">This Quarter</option>
+                                        <option value="this-year">This Year</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <button class="btn" onclick="generateCustomReport()" style="margin-top: 28px; width: 100%;">GENERATE REPORT</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Custom Report Results -->
+                <div id="custom-report-section" style="display: none;">
+                    <h2 style="margin: 30px 0 20px; color: var(--accent-purple);">Custom Period Report</h2>
+                    <div class="grid">
+                        <div class="kpi-card col-3">
+                            <div class="kpi-label">Total Production</div>
+                            <div class="kpi-value" id="custom-total">-</div>
+                        </div>
+                        <div class="kpi-card col-3">
+                            <div class="kpi-label">Unique Products</div>
+                            <div class="kpi-value" id="custom-products">-</div>
+                        </div>
+                        <div class="kpi-card col-3">
+                            <div class="kpi-label">Daily Average</div>
+                            <div class="kpi-value" id="custom-avg">-</div>
+                        </div>
+                        <div class="kpi-card col-3">
+                            <div class="kpi-label">Period</div>
+                            <div class="kpi-value" id="custom-period" style="font-size: 16px;">-</div>
+                        </div>
+                    </div>
+
+                    <div class="grid">
+                        <div class="col-12">
+                            <div class="chart-container">
+                                <div class="chart-title">Daily Production (Custom Period)</div>
+                                <canvas id="custom-period-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid">
+                        <div class="col-6">
+                            <div class="chart-container">
+                                <div class="chart-title">Category Breakdown</div>
+                                <canvas id="custom-category-pie"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="chart-container">
+                                <div class="chart-title">Category Weights</div>
+                                <canvas id="custom-category-bar"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Products Table -->
+                    <div class="data-table" style="margin-top: 30px;">
+                        <div class="table-title">TOP 20 PRODUCTS (CUSTOM PERIOD)</div>
+                        <div class="table-wrapper">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Product Name</th>
+                                        <th>Total Weight (KG)</th>
+                                        <th>Percentage</th>
+                                        <th>Batches</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="custom-products-tbody">
+                                    <tr><td colspan="5" class="loading">Generate report to see data</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="border-top: 2px solid var(--border-color); margin: 40px 0;"></div>
                 
                 <h2 style="margin: 30px 0 20px; color: var(--accent-green); font-size: 20px;">This Week</h2>
                 <div class="grid">
@@ -915,6 +1072,9 @@
     </div>
 
     <script>
+        console.log('✅ JavaScript is loading...');
+        console.log('Current URL:', window.location.href);
+        
         // Global variables
         let SHEET_ID = '';
         let API_KEY = '';
@@ -925,18 +1085,26 @@
 
         // Initialize
         function init() {
+            console.log('🚀 Initializing dashboard...');
+            
             SHEET_ID = localStorage.getItem('sheetId') || '';
             API_KEY = localStorage.getItem('apiKey') || '';
 
+            console.log('Sheet ID:', SHEET_ID ? 'Found' : 'Not found');
+            console.log('API Key:', API_KEY ? 'Found' : 'Not found');
+
             if (!SHEET_ID || !API_KEY) {
+                console.log('Showing setup panel...');
                 showSetupPanel();
             } else {
+                console.log('Credentials found, loading dashboard...');
                 document.getElementById('setup-container').style.display = 'none';
                 document.getElementById('main-dashboard').style.display = 'block';
                 loadAllData();
                 setInterval(loadAllData, 300000);
             }
 
+            // Set default dates
             const today = new Date();
             document.getElementById('daily-report-date').valueAsDate = today;
             document.getElementById('equip-start-date').valueAsDate = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -945,6 +1113,10 @@
             document.getElementById('product-end-date').valueAsDate = today;
             document.getElementById('category-start-date').valueAsDate = new Date(today.getFullYear(), today.getMonth(), 1);
             document.getElementById('category-end-date').valueAsDate = today;
+            document.getElementById('custom-report-start').valueAsDate = new Date(today.getFullYear(), today.getMonth(), 1);
+            document.getElementById('custom-report-end').valueAsDate = today;
+            
+            console.log('✅ Initialization complete');
         }
 
         function showSetupPanel() {
@@ -1084,7 +1256,18 @@
             }
             
             const data = await response.json();
-            return data.values || [];
+            const values = data.values || [];
+            
+            // Debug: Show first 5 data rows (skip header)
+            console.log(`📥 Fetched ${range}: ${values.length} rows`);
+            if (values.length > 1) {
+                console.log('First 5 data rows (raw from Google Sheets):');
+                values.slice(1, 6).forEach((row, idx) => {
+                    console.log(`  Row ${idx + 2}: Date="${row[0]}" (type: ${typeof row[0]}), Product="${row[1]}", Weight="${row[3]}"`);
+                });
+            }
+            
+            return values;
         }
 
         function updateStatus(status) {
@@ -1428,6 +1611,17 @@
             const kpiBadge = kpiScore >= 80 ? 'success' : (kpiScore >= 60 ? 'warning' : 'error');
             const kpiText = kpiScore >= 80 ? 'EXCELLENT' : (kpiScore >= 60 ? 'GOOD' : 'NEEDS IMPROVEMENT');
 
+            // Get most produced category
+            let mostProducedCat = '';
+            let maxWeight = 0;
+            Object.entries(categories).forEach(([cat, weight]) => {
+                if (weight > maxWeight) {
+                    maxWeight = weight;
+                    mostProducedCat = cat;
+                }
+            });
+            const mostProducedText = mostProducedCat ? `${mostProducedCat} (${formatNumber(maxWeight)} KG)` : 'N/A';
+
             const reportHTML = `
                 <div class="grid">
                     <div class="kpi-card col-3">
@@ -1537,9 +1731,304 @@
                         </table>
                     </div>
                 </div>
+
+                <h3 style="margin: 30px 0 20px;">Category Visualization</h3>
+                <div class="grid">
+                    <div class="col-6">
+                        <div class="chart-container">
+                            <div class="chart-title">Category Breakdown (Pie Chart)</div>
+                            <canvas id="daily-category-pie"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="chart-container">
+                            <div class="chart-title">Category Weights (Bar Chart)</div>
+                            <canvas id="daily-category-bar"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin: 30px 0 20px;">Daily Production Insights</h3>
+                <div class="grid">
+                    <div class="card col-6">
+                        <h4 style="margin-bottom: 15px; color: var(--accent-green);">Production Summary</h4>
+                        <p style="line-height: 1.8;"><strong>Most Produced Category:</strong> ${mostProducedText}</p>
+                        <p style="line-height: 1.8;"><strong>Number of Categories:</strong> ${Object.keys(categories).length}</p>
+                        <p style="line-height: 1.8;"><strong>Average Weight per Product:</strong> ${Object.keys(products).length > 0 ? (dailyKilos / Object.keys(products).length).toFixed(2) : '0'} KG</p>
+                    </div>
+                    <div class="card col-6">
+                        <h4 style="margin-bottom: 15px; color: var(--accent-blue);">Efficiency Metrics</h4>
+                        <p style="line-height: 1.8;"><strong>Products per Hour:</strong> ${fillingHours > 0 ? (uniqueProducts.size / fillingHours).toFixed(2) : '0'}</p>
+                        <p style="line-height: 1.8;"><strong>KG per Hour:</strong> ${fillingHours > 0 ? (dailyKilos / fillingHours).toFixed(2) : '0'}</p>
+                        <p style="line-height: 1.8;"><strong>Avg Filling Time:</strong> ${uniqueProducts.size > 0 ? (fillingHours / uniqueProducts.size).toFixed(2) : '0'} hrs/product</p>
+                    </div>
+                </div>
             `;
 
             document.getElementById('daily-report-content').innerHTML = reportHTML;
+            
+            // Show charts section
+            document.getElementById('daily-charts-section').style.display = 'block';
+            document.getElementById('daily-trend-charts').style.display = 'block';
+            
+            // Generate category charts
+            generateDailyCategoryCharts(categories);
+            
+            // Generate equipment chart
+            generateEquipmentUsageChart(equipmentUsage.mixers, equipmentUsage.grinders);
+            
+            // Generate trend charts (last 30 days)
+            generateDailyTrendCharts(reportDate);
+        }
+
+        function generateDailyTrendCharts(selectedDate) {
+            const endDate = new Date(selectedDate);
+            endDate.setHours(23, 59, 59, 999);
+            
+            const startDate = new Date(selectedDate);
+            startDate.setDate(startDate.getDate() - 29); // Last 30 days
+            startDate.setHours(0, 0, 0, 0);
+
+            // Data structures for trends
+            const dailyData = {};
+            const dates = [];
+            
+            // Initialize dates array
+            for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+                const dateKey = d.toISOString().split('T')[0];
+                dates.push(dateKey);
+                dailyData[dateKey] = {
+                    weight: 0,
+                    entries: 0,
+                    products: new Set(),
+                    fillingHours: 0,
+                    kpiScore: 0
+                };
+            }
+
+            // Process production data
+            allProductionData.slice(1).forEach(row => {
+                if (!row[0]) return;
+                const date = parseDate(row[0]);
+                if (!date) return;
+
+                const rowDate = new Date(date);
+                rowDate.setHours(0, 0, 0, 0);
+
+                if (rowDate >= startDate && rowDate <= endDate) {
+                    const dateKey = rowDate.toISOString().split('T')[0];
+                    if (dailyData[dateKey]) {
+                        const weight = parseWeight(row[3]);
+                        dailyData[dateKey].weight += weight;
+                        dailyData[dateKey].entries++;
+                    }
+                }
+            });
+
+            // Process filling data
+            allFillingData.slice(1).forEach(row => {
+                if (!row[0]) return;
+                const date = parseDate(row[0]);
+                if (!date) return;
+
+                const rowDate = new Date(date);
+                rowDate.setHours(0, 0, 0, 0);
+
+                if (rowDate >= startDate && rowDate <= endDate) {
+                    const dateKey = rowDate.toISOString().split('T')[0];
+                    if (dailyData[dateKey]) {
+                        const product = row[1];
+                        const batch = row[2];
+                        if (product) {
+                            dailyData[dateKey].products.add(`${product}|${batch}`);
+                        }
+
+                        const startTime = row[9];
+                        const endTime = row[10];
+                        if (startTime && endTime) {
+                            dailyData[dateKey].fillingHours += calculateHours(startTime, endTime);
+                        }
+                    }
+                }
+            });
+
+            // Calculate KPI for each day
+            const targetWeight = 30000;
+            const targetProducts = 15;
+            const targetHours = 8;
+
+            dates.forEach(dateKey => {
+                const data = dailyData[dateKey];
+                const productCount = data.products.size;
+                
+                const weightScore = Math.min(100, (data.weight / targetWeight) * 100);
+                const productScore = Math.min(100, (productCount / targetProducts) * 100);
+                const fillingScore = Math.min(100, (data.fillingHours / targetHours) * 100);
+                
+                data.kpiScore = (weightScore * 0.4 + productScore * 0.3 + fillingScore * 0.3);
+            });
+
+            // Prepare data arrays for charts
+            const labels = dates.map(d => {
+                const date = new Date(d);
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            });
+            
+            const kpiScores = dates.map(d => dailyData[d].kpiScore.toFixed(1));
+            const productCounts = dates.map(d => dailyData[d].products.size);
+            const weights = dates.map(d => dailyData[d].weight);
+            const hours = dates.map(d => dailyData[d].fillingHours.toFixed(1));
+
+            // Generate charts
+            generateTrendChart('kpi-trend-chart', 'KPI Score', labels, kpiScores, '#00ff88', 100);
+            generateTrendChart('products-trend-chart', 'Products Filled', labels, productCounts, '#00b4ff');
+            generateTrendChart('weight-trend-chart', 'Weight (KG)', labels, weights, '#ffd93d');
+            generateTrendChart('hours-trend-chart', 'Filling Hours', labels, hours, '#ff4757');
+        }
+
+        function generateTrendChart(canvasId, label, labels, data, color, maxY) {
+            const ctx = document.getElementById(canvasId);
+            destroyChart(canvasId);
+
+            const config = {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        borderColor: color,
+                        backgroundColor: `${color}33`, // 20% opacity
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: color,
+                        pointBorderColor: '#0a0e17',
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: {
+                    ...getChartOptions(),
+                    scales: {
+                        ...getChartOptions().scales,
+                        y: {
+                            ...getChartOptions().scales.y,
+                            beginAtZero: true,
+                            max: maxY || undefined
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1a1f2e',
+                            titleColor: '#e4e8f0',
+                            bodyColor: '#e4e8f0',
+                            borderColor: color,
+                            borderWidth: 1,
+                            padding: 12,
+                            displayColors: false
+                        }
+                    }
+                }
+            };
+
+            chartInstances[canvasId] = new Chart(ctx, config);
+        }
+
+        function getMostProducedCategory(categories) {
+            let maxCat = '';
+            let maxWeight = 0;
+            Object.entries(categories).forEach(([cat, weight]) => {
+                if (weight > maxWeight) {
+                    maxWeight = weight;
+                    maxCat = cat;
+                }
+            });
+            return maxCat ? `${maxCat} (${formatNumber(maxWeight)} KG)` : 'N/A';
+        }
+
+        function generateDailyCategoryCharts(categories) {
+            const labels = Object.keys(categories);
+            const values = Object.values(categories);
+            const colors = ['#00ff88', '#00b4ff', '#ffd93d', '#ff4757', '#a55eea', '#26de81', '#fd79a8'];
+
+            // Pie Chart
+            const pieCtx = document.getElementById('daily-category-pie');
+            destroyChart('daily-category-pie');
+            
+            chartInstances['daily-category-pie'] = new Chart(pieCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: colors.slice(0, labels.length),
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    ...getChartOptions(),
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: '#e4e8f0',
+                                font: { size: 11, family: 'JetBrains Mono' }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Bar Chart
+            const barCtx = document.getElementById('daily-category-bar');
+            destroyChart('daily-category-bar');
+            
+            chartInstances['daily-category-bar'] = new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Weight (KG)',
+                        data: values,
+                        backgroundColor: '#00b4ff',
+                        borderRadius: 6
+                    }]
+                },
+                options: getChartOptions()
+            });
+        }
+
+        // Helper function to create equipment usage chart
+        function generateEquipmentUsageChart(mixers, grinders) {
+            const ctx = document.getElementById('daily-equipment-chart');
+            if (!ctx) return;
+
+            const mixerData = Object.values(mixers);
+            const grinderData = Object.values(grinders);
+            const mixerLabels = Object.keys(mixers);
+            const grinderLabels = Object.keys(grinders);
+
+            destroyChart('daily-equipment-chart');
+            
+            chartInstances['daily-equipment-chart'] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [...mixerLabels, ...grinderLabels],
+                    datasets: [{
+                        label: 'Sessions',
+                        data: [...mixerData, ...grinderData],
+                        backgroundColor: [...mixerData.map(() => '#00ff88'), ...grinderData.map(() => '#00b4ff')],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    ...getChartOptions(),
+                    indexAxis: 'y'
+                }
+            });
         }
 
         // PAGE 4: Product Analysis
@@ -1615,6 +2104,189 @@
         }
 
         // PAGE 5: Auto Reports
+        function applyQuickSelect() {
+            const select = document.getElementById('quick-select-range');
+            const value = select.value;
+            const today = new Date();
+            
+            let startDate, endDate;
+            
+            switch(value) {
+                case 'this-week':
+                    startDate = getWeekStart(today);
+                    endDate = getWeekEnd(startDate);
+                    break;
+                case 'last-week':
+                    const lastWeekEnd = new Date(today);
+                    lastWeekEnd.setDate(lastWeekEnd.getDate() - today.getDay());
+                    lastWeekEnd.setDate(lastWeekEnd.getDate() - 1);
+                    startDate = getWeekStart(lastWeekEnd);
+                    endDate = getWeekEnd(startDate);
+                    break;
+                case 'this-month':
+                    startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+                    endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                    break;
+                case 'last-month':
+                    startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                    endDate = new Date(today.getFullYear(), today.getMonth(), 0);
+                    break;
+                case 'last-7-days':
+                    endDate = new Date(today);
+                    startDate = new Date(today);
+                    startDate.setDate(startDate.getDate() - 6);
+                    break;
+                case 'last-30-days':
+                    endDate = new Date(today);
+                    startDate = new Date(today);
+                    startDate.setDate(startDate.getDate() - 29);
+                    break;
+                case 'this-quarter':
+                    const quarter = Math.floor(today.getMonth() / 3);
+                    startDate = new Date(today.getFullYear(), quarter * 3, 1);
+                    endDate = new Date(today.getFullYear(), quarter * 3 + 3, 0);
+                    break;
+                case 'this-year':
+                    startDate = new Date(today.getFullYear(), 0, 1);
+                    endDate = new Date(today.getFullYear(), 11, 31);
+                    break;
+                default:
+                    return;
+            }
+            
+            document.getElementById('custom-report-start').valueAsDate = startDate;
+            document.getElementById('custom-report-end').valueAsDate = endDate;
+        }
+
+        function generateCustomReport() {
+            const startDate = document.getElementById('custom-report-start').valueAsDate;
+            const endDate = document.getElementById('custom-report-end').valueAsDate;
+            
+            if (!startDate || !endDate) {
+                alert('Please select both start and end dates');
+                return;
+            }
+            
+            if (startDate > endDate) {
+                alert('Start date must be before end date');
+                return;
+            }
+            
+            // Get data for the custom range
+            const customData = getDataForRange(startDate, endDate);
+            
+            // Calculate metrics
+            const daysDiff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+            const avgDaily = customData.totalKilos / daysDiff;
+            
+            // Update KPI cards
+            document.getElementById('custom-total').textContent = formatNumber(customData.totalKilos) + ' KG';
+            document.getElementById('custom-products').textContent = Object.keys(customData.products).length;
+            document.getElementById('custom-avg').textContent = formatNumber(avgDaily.toFixed(0)) + ' KG/day';
+            document.getElementById('custom-period').textContent = 
+                startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' - ' +
+                endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            
+            // Show section
+            document.getElementById('custom-report-section').style.display = 'block';
+            
+            // Generate daily production chart
+            updateChart('custom-period-chart', customData.dailyHistory, 'bar');
+            
+            // Generate category charts
+            updateCustomCategoryCharts(customData.categories);
+            
+            // Generate top products table
+            updateCustomProductsTable(customData.products, customData.totalKilos);
+            
+            // Scroll to results
+            document.getElementById('custom-report-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function updateCustomCategoryCharts(categories) {
+            const labels = Object.keys(categories);
+            const values = Object.values(categories);
+            const colors = ['#00ff88', '#00b4ff', '#ffd93d', '#ff4757', '#a55eea', '#26de81', '#fd79a8'];
+
+            // Pie Chart
+            const pieCtx = document.getElementById('custom-category-pie');
+            destroyChart('custom-category-pie');
+            
+            chartInstances['custom-category-pie'] = new Chart(pieCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: colors.slice(0, labels.length),
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    ...getChartOptions(),
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: '#e4e8f0',
+                                font: { size: 11, family: 'JetBrains Mono' }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Bar Chart
+            const barCtx = document.getElementById('custom-category-bar');
+            destroyChart('custom-category-bar');
+            
+            chartInstances['custom-category-bar'] = new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Weight (KG)',
+                        data: values,
+                        backgroundColor: '#00b4ff',
+                        borderRadius: 6
+                    }]
+                },
+                options: getChartOptions()
+            });
+        }
+
+        function updateCustomProductsTable(products, totalWeight) {
+            const tbody = document.getElementById('custom-products-tbody');
+            
+            // Convert to array and sort
+            const sortedProducts = Object.entries(products)
+                .map(([name, data]) => ({
+                    name: name,
+                    weight: data.weight || data,
+                    batches: data.batches || 1
+                }))
+                .sort((a, b) => b.weight - a.weight)
+                .slice(0, 20);
+            
+            if (sortedProducts.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-secondary);">No data for this period</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = sortedProducts.map((product, index) => {
+                const percentage = ((product.weight / totalWeight) * 100).toFixed(1);
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${product.name}</td>
+                        <td>${formatNumber(product.weight)}</td>
+                        <td>${percentage}%</td>
+                        <td>${product.batches}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
         function generateAutoReports() {
             const today = new Date();
             
@@ -1661,15 +2333,21 @@
         }
 
         function getDataForRange(startDate, endDate) {
+            console.log(`📊 Analyzing range: ${startDate.toDateString()} to ${endDate.toDateString()}`);
+            console.log('═══════════════════════════════════════════════════');
+            
             const data = {
                 totalKilos: 0,
                 entries: 0,
                 products: {},
                 categories: {},
-                dailyHistory: {}
+                dailyHistory: {},
+                rowDetails: [] // Track each matched row
             };
 
-            allProductionData.slice(1).forEach(row => {
+            let matchedRows = 0;
+
+            allProductionData.slice(1).forEach((row, idx) => {
                 if (!row[0]) return;
                 const date = parseDate(row[0]);
                 if (!date) return;
@@ -1679,22 +2357,134 @@
 
                 if (rowDate >= startDate && rowDate <= endDate) {
                     const product = row[1];
+                    const batch = row[2];
                     const weight = parseWeight(row[3]);
+                    
+                    matchedRows++;
+                    
+                    // Log each matched row
+                    console.log(`  ✅ Row ${idx + 2}: ${rowDate.toLocaleDateString()} | ${product} | Batch: ${batch} | ${weight} KG`);
                     
                     data.totalKilos += weight;
                     data.entries++;
+                    
+                    // Store row details
+                    data.rowDetails.push({
+                        rowNum: idx + 2,
+                        date: rowDate.toLocaleDateString(),
+                        product: product,
+                        batch: batch,
+                        weight: weight
+                    });
 
                     const category = detectCategory(product);
                     data.categories[category] = (data.categories[category] || 0) + weight;
-                    data.products[product] = (data.products[product] || 0) + weight;
+                    
+                    // Track product weight and batches
+                    if (!data.products[product]) {
+                        data.products[product] = { weight: 0, batches: 0 };
+                    }
+                    data.products[product].weight += weight;
+                    data.products[product].batches++;
 
                     const dateKey = rowDate.toISOString().split('T')[0];
                     data.dailyHistory[dateKey] = (data.dailyHistory[dateKey] || 0) + weight;
                 }
             });
 
+            console.log('═══════════════════════════════════════════════════');
+            console.log(`✅ TOTAL MATCHED: ${matchedRows} rows`);
+            console.log(`💰 TOTAL WEIGHT: ${data.totalKilos.toFixed(2)} KG`);
+            console.log('📅 Daily breakdown:');
+            Object.keys(data.dailyHistory).sort().forEach(dateKey => {
+                const weight = data.dailyHistory[dateKey];
+                const date = new Date(dateKey);
+                console.log(`   ${date.toLocaleDateString('en-US', {month: 'short', day: 'numeric'})}: ${weight.toFixed(0)} KG`);
+            });
+            
+            // Check for potential duplicates
+            const duplicates = findDuplicates(data.rowDetails);
+            if (duplicates.length > 0) {
+                console.warn('⚠️ POTENTIAL DUPLICATES FOUND:');
+                duplicates.forEach(dup => {
+                    console.warn(`   Rows ${dup.rows.join(', ')}: ${dup.product} (Batch: ${dup.batch}) - ${dup.count} times x ${dup.weight} KG = ${dup.count * dup.weight} KG`);
+                });
+            }
+            
+            console.log('═══════════════════════════════════════════════════');
+
             return data;
         }
+
+        function findDuplicates(rowDetails) {
+            const seen = {};
+            const duplicates = [];
+            
+            rowDetails.forEach(row => {
+                const key = `${row.date}|${row.product}|${row.batch}`;
+                if (!seen[key]) {
+                    seen[key] = {
+                        product: row.product,
+                        batch: row.batch,
+                        weight: row.weight,
+                        rows: [row.rowNum],
+                        count: 1
+                    };
+                } else {
+                    seen[key].rows.push(row.rowNum);
+                    seen[key].count++;
+                }
+            });
+            
+            // Find entries that appear more than once
+            Object.values(seen).forEach(entry => {
+                if (entry.count > 1) {
+                    duplicates.push(entry);
+                }
+            });
+            
+            return duplicates;
+        }
+
+        // Manual verification function - run this in console to check Excel totals
+        window.verifyExcelTotal = function(month, year) {
+            console.log(`🔍 MANUAL VERIFICATION: ${month}/${year}`);
+            console.log('═══════════════════════════════════════════════════');
+            
+            let total = 0;
+            let count = 0;
+            const entries = [];
+            
+            allProductionData.slice(1).forEach((row, idx) => {
+                if (!row[0]) return;
+                const date = parseDate(row[0]);
+                if (!date) return;
+                
+                if (date.getMonth() + 1 === month && date.getFullYear() === year) {
+                    const weight = parseWeight(row[3]);
+                    total += weight;
+                    count++;
+                    entries.push({
+                        row: idx + 2,
+                        date: date.toLocaleDateString(),
+                        product: row[1],
+                        batch: row[2],
+                        weight: weight
+                    });
+                }
+            });
+            
+            console.log(`Found ${count} entries`);
+            console.log(`Total: ${total.toFixed(2)} KG`);
+            console.log('\nAll entries:');
+            entries.forEach(e => {
+                console.log(`  Row ${e.row}: ${e.date} | ${e.product} | Batch ${e.batch} | ${e.weight} KG`);
+            });
+            
+            return { total, count, entries };
+        };
+        
+        console.log('💡 TIP: Run verifyExcelTotal(1, 2026) in console to manually verify January 2026 total');
 
         function updateChart(chartId, dailyHistory, type) {
             const ctx = document.getElementById(chartId);
@@ -1927,24 +2717,62 @@
         // Utility Functions
         function parseDate(dateValue) {
             if (!dateValue) return null;
-            if (dateValue instanceof Date && !isNaN(dateValue.getTime())) return dateValue;
+            
+            // If it's already a Date object
+            if (dateValue instanceof Date && !isNaN(dateValue.getTime())) {
+                return dateValue;
+            }
+            
+            // Handle Google Sheets serial date numbers
             if (typeof dateValue === 'number') {
+                // Google Sheets epoch: December 30, 1899
                 const date = new Date((dateValue - 25569) * 86400 * 1000);
-                if (!isNaN(date.getTime())) return date;
+                if (!isNaN(date.getTime())) {
+                    console.log(`📅 Serial number ${dateValue} -> ${date.toDateString()}`);
+                    return date;
+                }
             }
             
             const dateStr = dateValue.toString().trim();
+            
+            // Parse dd/m/yy or dd/mm/yy format (e.g., 27/1/26 = Day 27, Month 1 (Jan), Year 2026)
             const dmyMatch = dateStr.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})$/);
             if (dmyMatch) {
                 let day = parseInt(dmyMatch[1]);
-                let month = parseInt(dmyMatch[2]) - 1;
+                let month = parseInt(dmyMatch[2]) - 1; // Month is MIDDLE number (1=Jan, 2=Feb, etc.)
                 let year = parseInt(dmyMatch[3]);
-                if (year < 100) year += 2000;
-                return new Date(year, month, day);
+                
+                // Handle 2-digit years
+                if (year < 100) {
+                    // 26 -> 2026, 25 -> 2025
+                    year += 2000;
+                }
+                
+                // Create the date
+                const date = new Date(year, month, day);
+                
+                // CRITICAL: Validate the date is what we expect
+                // This prevents JavaScript from auto-correcting invalid dates
+                // (e.g., Feb 30 becomes Mar 2)
+                if (date.getFullYear() === year && 
+                    date.getMonth() === month && 
+                    date.getDate() === day) {
+                    console.log(`✅ Parsed "${dateStr}" -> ${date.toDateString()} (Day=${day}, Month=${month+1}, Year=${year})`);
+                    return date;
+                } else {
+                    console.warn(`⚠️ Date mismatch: "${dateStr}" -> Expected ${year}-${month+1}-${day} but got ${date.toDateString()}`);
+                    return null;
+                }
             }
             
+            // Try native Date parsing as last resort
             const date = new Date(dateValue);
-            if (!isNaN(date.getTime())) return date;
+            if (!isNaN(date.getTime())) {
+                console.log(`📅 Native parse: "${dateValue}" -> ${date.toDateString()}`);
+                return date;
+            }
+            
+            console.warn(`❌ Could not parse date: "${dateValue}"`);
             return null;
         }
 
@@ -2054,7 +2882,22 @@
         }
 
         // Initialize
-        init();
+        try {
+            console.log('Starting initialization...');
+            init();
+            console.log('Initialization successful!');
+        } catch (error) {
+            console.error('FATAL ERROR during initialization:', error);
+            document.body.innerHTML = `
+                <div style="padding: 40px; color: #ff4757; font-family: monospace;">
+                    <h1>❌ Dashboard Error</h1>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                    <p><strong>Stack:</strong></p>
+                    <pre style="background: #1a1f2e; padding: 20px; border-radius: 8px; overflow: auto;">${error.stack}</pre>
+                    <button onclick="location.reload()" style="background: #00ff88; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; margin-top: 20px;">Reload Page</button>
+                </div>
+            `;
+        }
     </script>
 </body>
 </html>
